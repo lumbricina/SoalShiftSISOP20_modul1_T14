@@ -16,6 +16,52 @@ Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktik
 
 Whits memohon kepada kalian yang sudah jago mengolah data untuk mengerjakan laporan tersebut.
 
+###Pembahasan
+[Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal1/soal1.sh)
+```
+echo "1.a : profit terminim"
+
+region=$(awk -F $'\t' '
+         FNR == 1 {next}
+         {arr[$13]+=$21}
+         END {for (i in arr) {printf "%s %.2f\n", i, arr[i]}}
+         ' Sample-Superstore.tsv | sort -nk2 | awk '{print $1}' | head -1)
+echo "$region" 
+```
+pada soal 1a, dengan menggunakan sort dapat didapatkan region yang memiliki keuntungan paling sedikit
+
+```
+echo -e  "\n1.b : 2 state profit terminim"
+
+state=$(awk -v region="$region" -F $'\t' '
+        FNR == 1 {next}
+        ($13~region) {arr[$11]+=$21}
+        END {for (i in arr) {printf "%s %.2f\n", i, arr[i]}}
+        ' Sample-Superstore.tsv | sort -nk2 | awk '{print $1}' | head -2)
+echo "$state"
+
+state1=$(echo -e "$state" | sed -n '1p')
+state2=$(echo -e "$state" | sed -n '2p')
+
+#echo "$state1"
+#echo "$state2"
+```
+Pada soal 1b, mirip dengan soal 1a, menggunakan sort untuk mendapatkan state dengan keuntungan paling sedikit
+
+```
+echo -e "\n1.c : 10 produk profit terminim :v"
+
+product=$(awk -v state1="$state1" -v state2="$state2" -F '\t' '
+        FNR == 1 {next}
+        ($11~state1) || ($11~state2) {arr[$17]+=$21}
+        END {for (i in arr) {printf "%s:%.2f\n", i, arr[i]}}
+        ' Sample-Superstore.tsv | sort -t $":" -nk2 | awk -F: '{print $1}' | head -10 )
+echo "$product"
+
+#awk -F: '{print $1}' $product
+```
+Pada soal 1c, mencari produk dengan keuntungan paling sedikit dengan mengurutkan keuntungan produk (sort lagi)
+
 ### Soal 2
 
 Pada suatu siang, laptop Randolf dan Afairuzr dibajak oleh seseorang dan kehilangan
@@ -36,11 +82,11 @@ d. Jangan lupa untuk membuat dekripsinya supaya nama file bisa kembali.
 
 ###Pembahasan
 
-2a dan 2b : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal2ab.sh)
+2a dan 2b : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal2/soal2ab.sh)
 
-Enkripsi  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal2c.sh)
+Enkripsi  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal2/soal2c.sh)
 
-Dekripsi  : [Soorce](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal2d.sh)
+Dekripsi  : [Soorce](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal2/soal2d.sh)
 
 ``` dd if=/dev/urandom|tr -cd A-Za-z0-9|head -c 28 >> $1.txt ``` Pertama kita membuat sebuah command yang digunakan untuk men-generate random password sebanyak 28 karakter yang akan disimpan kedalam file .txt dimana file tersebut namanya telah ditulis dalam bentuk argumen.
 
@@ -77,3 +123,53 @@ b. Setiap 8 jam dimulai dari jam 6.05 setiap hari kecuali hari Sabtu Karena gamb
 c. Maka dari itu buatlah sebuah script untuk mengidentifikasi gambar yang identik dari keseluruhan gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate dengan format filename "duplicate_nomor" (contoh : duplicate_200, duplicate_201). Setelah itu lakukan pemindahan semua gambar yang tersisa kedalam folder ./kenangan  dengan format filename "kenangan_nomor" (contoh: kenangan_252, kenangan_253). Setelah tidak ada gambar di current directory, maka lakukan backup seluruh log menjadi ekstensi ".log.bak". Hint : Gunakan wget.log untuk membuat location.log yang isinya merupakan hasil dari grep "Location".
 
 *Gunakan Bash, Awk dan Crontab
+
+###Pembahasan
+3a  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3/soal3a.sh)
+3b  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3/soal3b.cron)
+3c  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3/soal3c.sh)
+
+```
+#!/bin/bash
+nama="wget"
+nama=$nama".log"
+nama=${nama// /_}
+pnama="pdkt_kusuma_"
+echo $nama
+for a in {1..28}
+do
+ wget -a ${nama} -O ${pnama}$a "https://loremflickr.com/320/240/cat"
+done
+```
+Pada soal 3a, pertama mengambil nama dengna wget dan menyimpan dengan pnama = "pdkt_kusuma_"
+karena diminta 28 kali jadi menggunakan ``` for a in {1..28} ```
+``` do ``` dilakukan untuk mendownload gambar dengan wget di https://loremflickr.com/320/240/cat
+dengan kode ```  wget -a ${nama} -O ${pnama}$a "https://loremflickr.com/320/240/cat" ```
+
+
+Pada soal 3b, diselesaikan dengan crontab dengan mengisi crontab sebagai berikut :
+``` 5 6,14,22 * * 0-5 bash /home/lesmono619/soal3a.sh ```
+bagian lesmono619 dapat diganti dengan user sesuai dengan pemakai ($USER)
+
+```
+#!/bin/bash
+
+cat wget.log
+grep Location: > location.log
+
+mkdir -p duplicate kenangan
+
+awk '{ printf("%s %03d\n", $2, a + 1); a += 1 }' location.log | sort -n -k1 > tmp.log
+awk -F ' ' '{ a = $2+0; if ( loc != $1 ){ loc = $1; cmd = " mv pdkt_kusuma_" a " kenangan/kenangan_" a; }
+  else{ cmd = "mv pdkt_kusuma_" a " duplicate/duplicate_" a; } system(cmd); }' tmp.log
+rm tmp.log
+
+for b in *.log; 
+do 
+  mv "$b" "${b%.log}.log.bak"
+done
+```
+pada soal 3c diminta untuk memindahkan file ke kenangan dan duplicate
+
+###Kesulitan
+Pada program untuk soal 3c beberapa kali tidak dapat digunakan

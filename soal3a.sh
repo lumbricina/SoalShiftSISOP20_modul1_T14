@@ -1,6 +1,4 @@
 #!/bin/bash
-
-#filename=$(date)
 nama="wget"
 nama=$nama".log"
 nama=${nama// /_}

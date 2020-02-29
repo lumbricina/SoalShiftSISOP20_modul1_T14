@@ -16,6 +16,7 @@ Whits adalah seorang mahasiswa teknik informatika. Dia mendapatkan tugas praktik
 
 Whits memohon kepada kalian yang sudah jago mengolah data untuk mengerjakan laporan tersebut.
 
+![Dokumentasi 1](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal1.PNG)
 ###Pembahasan
 [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal1/soal1.sh)
 ```
@@ -129,6 +130,8 @@ c. Maka dari itu buatlah sebuah script untuk mengidentifikasi gambar yang identi
 3b  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3/soal3b.cron)
 3c  : [Source](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3/soal3c.sh)
 
+![Dokumentasi 3a](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3a.PNG)
+![Dokumentasi 3C](https://github.com/lumbricina/SoalShiftSISOP20_modul1_T14/blob/master/soal3c.PNG)
 ```
 #!/bin/bash
 nama="wget"
